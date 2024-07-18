@@ -93,6 +93,19 @@ def print_commune(row, curtypecomm, currurcomm):
         'motclassant': row['mot classant'] }
     print("{dept}0{inseerivo}{clerivo}{libelle}{curtypecomm}  {currurcomm}{nopopinfo} {datecreation}".format(**args))
 
+def print_dep(row):
+    # 991008415       12;CANTAL;;;;;;;00000000;17900304;;;00000000
+    # 150        CANTAL                                          00000000000000 00000000000000
+    code = row["code topo"]
+    date = row["date creation de article"]
+    sdate = "{}{:03d}".format(date[0:4], numjouran(atoi(date[6:]), atoi(date[4:6]), atoi(date[0:4])))
+    args = {
+        'dept': code[7:9],
+        'libelle': row["libelle"].ljust(48),
+        'zero': ''.ljust(14, '0'),
+        'datecreation': sdate.rjust(14,'0') }
+    print("{dept}0        {libelle}{zero} {datecreation}".format(**args))
+
 with open("topo15-sorted.csv", newline="") as csvfile:
 #with open("topo15001s.csv", newline="") as csvfile:
     reader = csv.DictReader(
@@ -120,7 +133,10 @@ with open("topo15-sorted.csv", newline="") as csvfile:
     for row in reader:
         type_enr = row["code topo"][16:18]
         code_insee = row["code topo"][8:13]
-        if type_enr == "13":
+        if type_enr == "12":
+            # departement
+            print_dep(row)
+        elif type_enr == "13":
             # commune
             curcomm = code_insee
             curtypecomm = row["type commune actuel (R ou N)"]
