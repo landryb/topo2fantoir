@@ -201,6 +201,8 @@ with open("topo15-sorted.csv", newline="") as csvfile:
             curcomm = code_insee
             curtypecomm = row["type commune actuel (R ou N)"]
             currurcomm = row["RUR actuel"]
+            if curtypecomm == 'R' and currurcomm == '':
+                currurcomm = ' '
             print_commune(row, curtypecomm, currurcomm)
         elif type_enr == "14":
             # voie
