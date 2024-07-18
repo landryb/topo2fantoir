@@ -8,17 +8,21 @@ salph = "ABCDEFGHJKLMNPRSTUVWXYZ"
 alph = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 natv = (
 'AV  ',
+'ALL ',
 'CHE ',
 'CITE',
+'ENC ',
 'FG  ',
 'GR  ',
+'IMP ',
 'PAS ',
 'PL  ',
 'LOT ',
 'RES ',
 'RTE ',
 'RUE ',
-'SEN '
+'SEN ',
+'ZAC '
 )
 
 # https://python.jpvweb.com/python/mesrecettespython/doku.php?id=calcul_de_dates#donne_le_numero_du_jour_de_l_annee
