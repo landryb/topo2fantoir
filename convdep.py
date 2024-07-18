@@ -14,6 +14,7 @@ natv = (
 'GR  ',
 'PAS ',
 'PL  ',
+'LOT ',
 'RES ',
 'RTE ',
 'RUE ',
