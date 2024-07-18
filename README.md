@@ -7,7 +7,7 @@ produit depuis juillet 2023 / a été remplacé par le fichier
 Mais votre outil n'a pas encore été mis à jour pour supporter ce nouveau
 fichier.. (ex [plugin qgis cadastre](https://github.com/3liz/QgisCadastrePlugin/issues/345)).
 
-ce bout de python essaie de 'recréer' un fichier départemental FANTOIR depuis
+ce bout de python **essaie** de 'recréer' un fichier départemental FANTOIR depuis
 l'export CSV du fichier TOPO.
 
 attention, il manque dans la sortie (infos non présentes dans TOPO):
