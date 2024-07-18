@@ -141,6 +141,9 @@ def print_commune(row, curtypecomm, currurcomm):
     code = row["code topo"]
     date = row["date creation de article"]
     sdate = "{}{:03d}".format(date[0:4], numjouran(atoi(date[6:]), atoi(date[4:6]), atoi(date[0:4])))
+    # some kind of default date ?
+    if date == '18750101':
+        sdate = '1987001'
     args = {
         'dept': code[7:9],
         'inseerivo': code[9:16],
