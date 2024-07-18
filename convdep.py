@@ -114,6 +114,10 @@ def print_voie(row, curtypecomm, currurcomm):
         libelle = row["libelle"][4:].ljust(27)
     else:
         libelle = row["libelle"].ljust(27)
+    # pas d'info sur le fait qu'un lieu dit soit habité ou pas dans TOPO -> 1 par défaut
+    carlieudit = '1'
+    if row["type voie"] == '4':
+        carlieudit = ' '
 #    print("{} -> '{}' + '{}'".format(row["libelle"][0:4], natvoie, libelle))
     # conversion de YYYYMMDD en YYYYQQQ
     sdate = "{}{:03d}".format(date[0:4], numjouran(atoi(date[6:]), atoi(date[4:6]), atoi(date[0:4])))
@@ -130,7 +134,7 @@ def print_voie(row, curtypecomm, currurcomm):
         'datecreation': sdate.rjust(14,'0'),
         'nocodemajic':''.ljust(22),
         'typevoie': row["type voie"],
-        'caracterelieudit': '0', #pas d'info sur le fait qu'un lieu dit soit habité ou pas dans TOPO
+        'caracterelieudit': carlieudit,
         'motclassant': row['mot classant'] }
     print("{dept}0{inseerivo}{clerivo}{natvoie}{libelle}{curtypecomm}  {currurcomm}  {caracterevoie}          {nopopinfo} {datecreation}{nocodemajic}{typevoie}{caracterelieudit}  {motclassant}".format(**args))
 
