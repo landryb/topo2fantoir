@@ -5,7 +5,7 @@
 import csv
 from locale import atoi
 salph = "ABCDEFGHJKLMNPRSTUVWXYZ"
-alph = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+alph = "0123456789ABCDEFGHJKLMNPRSTUVWXYZ"
 # list constructed by hand on dept 15 entries
 # full list in p6 of FANR descr
 natv = (
