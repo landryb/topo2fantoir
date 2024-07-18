@@ -6,22 +6,43 @@ import csv
 from locale import atoi
 salph = "ABCDEFGHJKLMNPRSTUVWXYZ"
 alph = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+# list constructed by hand on dept 15 entries
+# full list in p6 of FANR descr
 natv = (
 'AV  ',
 'ALL ',
+'BD  ',
+'CAR ',
+'CC  ',
+'CD  ',
 'CHE ',
+'CHEM',
+'COTE',
+'CR  ',
+'CRS ',
 'CITE',
+'CTRE',
+'D   ',
 'ENC ',
 'FG  ',
 'GR  ',
+'HAM ',
 'IMP ',
+'MTE ',
+'N   ',
 'PAS ',
 'PL  ',
 'LOT ',
+'PLE ',
+'PROM',
 'RES ',
 'RTE ',
 'RUE ',
 'SEN ',
+'SQ  ',
+'TSSE',
+'V   ',
+'VC  ',
 'ZAC '
 )
 
