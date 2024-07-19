@@ -1,0 +1,2 @@
+Placer dans ce répertoire un fichier "topo-fichier-des-entites-topographiques.csv" 
+téléchargeable ici : https://www.data.gouv.fr/fr/datasets/fichier-des-entites-topographiques-topo-dgfip-1/
