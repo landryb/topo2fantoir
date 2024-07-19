@@ -2,8 +2,14 @@
 # -*- coding: utf-8 -*-
 # vim: ts=4 sw=4 et
 
+import sys
 import csv
 from locale import atoi
+import argparse
+from argparse import RawTextHelpFormatter
+import logging
+import datetime
+import time
 
 salph = "ABCDEFGHJKLMNPRSTUVWXYZ"
 alph = "0123456789ABCDEFGHJKLMNPRSTUVWXYZ"
@@ -14,6 +20,49 @@ with open("natv.txt", "r") as natvf:
 # TOPO contient ces valeurs aussi pour nationale/departementale/voie ?
 natv.extend(("N   ", "D   ", "V   "))
 
+
+# jour courant
+date = datetime.datetime.now()
+
+# configuration du logguer
+
+# un format commun à la console et au fichier
+# simple : juste le message
+logformat_simple = '%(message)s'
+# compliqué
+logformat_complexe = '%(asctime)s [%(levelname)-7s] %(message)s'
+
+# configuration du log fichier
+logging.basicConfig(level=logging.DEBUG,
+                    format=logformat_simple,
+                    # format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S',
+                    # filename=f"logs/{date.strftime('%Y%m%d-%H%M')}.log",
+                    encoding='utf-8',
+                    # filemode='w'
+                    )
+
+# configuration du log console
+# on ne sort que les messages INFO ou plus élevé
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+formatter = logging.Formatter(logformat_simple)
+console.setFormatter(formatter)
+# add the handler to the root logger
+
+
+# ====================================================================================================================
+
+def get_chrono(startTime, stopTime):
+
+    # version en h min s
+    hours, rem = divmod(stopTime - startTime, 3600)
+    minutes, seconds = divmod(rem, 60)
+
+    diffTime = "{:0>2}:{:0>2}:{:05.2f}".format(int(hours), int(minutes), seconds)
+    return diffTime
+
+# ====================================================================================================================
 
 # https://python.jpvweb.com/python/mesrecettespython/doku.php?id=calcul_de_dates#donne_le_numero_du_jour_de_l_annee
 def numjouran(j, m, a):
@@ -127,44 +176,101 @@ def print_dep(row):
     }
     print("{dept}0        {libelle}{zero} {datecreation}".format(**args))
 
+    pass
 
-with open("topo15-sorted.csv", newline="") as csvfile:
-    reader = csv.DictReader(
-        csvfile,
-        delimiter=";",
-        fieldnames=(
-            "code topo",
-            "libelle",
-            "type commune actuel (R ou N)",
-            "type commune FIP (RouNFIP)",
-            "RUR actuel",
-            "RUR FIP",
-            "caractere voie",
-            "annulation",
-            "date annulation",
-            "date creation de article",
-            "type voie",
-            "mot classant",
-            "date derniere transition",
-        ),
-    )
-    curtypecomm = None
-    currurcomm = None
-    curcomm = None
-    for row in reader:
-        type_enr = row["code topo"][16:18]
-        code_insee = row["code topo"][8:13]
-        if type_enr == "12":
-            # departement
-            print_dep(row)
-        elif type_enr == "13":
-            # commune
-            curcomm = code_insee
-            curtypecomm = row["type commune actuel (R ou N)"]
-            currurcomm = row["RUR actuel"]
-            if curtypecomm == "R" and currurcomm == "":
-                currurcomm = " "
-            print_commune(row, curtypecomm, currurcomm)
-        elif type_enr == "14":
-            # voie
-            print_voie(row, curtypecomm, currurcomm)
+
+# ====================================================================================================================
+# ====================================================================================================================
+# ====================================================================================================================
+
+
+def main():
+
+    parser = argparse.ArgumentParser(description="""
+
+    Ce script permet de créer un fichier compatible FANTOIR à partir des données TOPO.
+    
+    En argument mettre le nom du fichier TOPO à traiter qui est dans le répertoire 'in_topo'
+    et redirigé la sortie consol dans un fichier.
+    
+    Exemple : convdep.py topo_14.csv > out_fantoir/fantoir_14
+    
+    """, formatter_class=RawTextHelpFormatter)
+
+    # test des variables passées
+    fichier_topo = False
+
+    try:
+        fichier_topo = str(sys.argv[1])
+    except:
+        logging.error("ERREUR : il manque un fichier TOPO en argument !")
+        logging.error("FIN")
+        parser.print_help()
+        sys.exit(1)
+        return
+
+    # si on est là, c'est que ça passe
+
+    global start_time
+    start_time = time.perf_counter()
+
+    logging.info("Début du script")
+    logging.info("")
+
+    with open(f"in_topo/{fichier_topo}", newline="") as csvfile:
+        reader = csv.DictReader(
+            csvfile,
+            delimiter=";",
+            fieldnames=(
+                "code topo",
+                "libelle",
+                "type commune actuel (R ou N)",
+                "type commune FIP (RouNFIP)",
+                "RUR actuel",
+                "RUR FIP",
+                "caractere voie",
+                "annulation",
+                "date annulation",
+                "date creation de article",
+                "type voie",
+                "mot classant",
+                "date derniere transition",
+            ),
+        )
+        curtypecomm = None
+        currurcomm = None
+        curcomm = None
+        for row in reader:
+            type_enr = row["code topo"][16:18]
+            code_insee = row["code topo"][8:13]
+            if type_enr == "12":
+                # departement
+                print_dep(row)
+            elif type_enr == "13":
+                # commune
+                curcomm = code_insee
+                curtypecomm = row["type commune actuel (R ou N)"]
+                currurcomm = row["RUR actuel"]
+                if curtypecomm == "R" and currurcomm == "":
+                    currurcomm = " "
+                print_commune(row, curtypecomm, currurcomm)
+            elif type_enr == "14":
+                # voie
+                print_voie(row, curtypecomm, currurcomm)
+
+
+    #
+
+    logging.info("F I N")
+
+    # chrono final
+    final_chrono = get_chrono(start_time, time.perf_counter())
+    logging.info(f"Temps total : {final_chrono}")
+    logging.info("")
+
+    pass
+
+
+if __name__ == '__main__':
+    main()
+

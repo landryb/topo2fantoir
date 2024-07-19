@@ -1,5 +1,7 @@
 # topo2fantoir
 
+## Contexte, besoin
+
 Vous utilisez un outil qui a besoin d'un fichier au format
 [FANTOIR](https://fr.wikipedia.org/wiki/FANTOIR), et ce dernier n'est plus
 produit depuis juillet 2023 / a été remplacé par le fichier
@@ -7,26 +9,86 @@ produit depuis juillet 2023 / a été remplacé par le fichier
 Mais votre outil n'a pas encore été mis à jour pour supporter ce nouveau
 fichier.. (ex [plugin qgis cadastre](https://github.com/3liz/QgisCadastrePlugin/issues/345)).
 
-ce bout de python **essaie** de 'recréer' un fichier départemental FANTOIR depuis
+Ce bout de python **essaie** de 'recréer' un fichier départemental FANTOIR depuis
 l'export CSV du fichier TOPO.
 
-attention, il manque dans la sortie (infos non présentes dans TOPO):
+
+## Limitations
+
+**Aucune garantie n'est apportée sur le résultat fourni.**
+
+Il manque dans la sortie (infos non présentes dans TOPO) :
 - le champ 'identifiant majic'
 - le champ 'indicateur lieu dit non bati'
 - les informations de population
 
-en entrée, il faut les données d'un département extraites du CSV france entière
-de 580Mo, triées sur le premier champ, exemple pour le cantal (15):
+
+## Utilisation
+
+### prérequis
+
+Un système d'exploitation permettant d'utiliser bash, curl et python.
+
+
+### Installation
+
+Cloner ce projet : `git clone https://github.com/landryb/topo2fantoir.git`
+
+Il n'y a pas de modules particuliers à installer.
+
+
+### Téléchargement du fichier TOPO
+
+Télécharger le fichier TOPO depuis [cette page](https://www.data.gouv.fr/fr/datasets/fichier-des-entites-topographiques-topo-dgfip-1/) et le placer dans le répertoire `in_topo``.
+
+Ou utiliser cette commande : `curl -o in_topo/topo-fichier-des-entites-topographiques.csv https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/topo-fichier-des-entites-topographiques/exports/csv`
+
+
+### Création d'un fichier TOPO départemental
+
+Pour alléger les traitements, on va extraire les données d'un seul département de ce fichier national.
+
+Pour cela il faut connaître le code administratif de la région. Se reporter au tableau plus bas.
+
+Exemple pour le département du Cantal (15) dans la région Auvergne-Rhône-Alpes (84) :
 
 ```
-$grep  ^991008415 topo-fichier-des-entites-topographiques.csv | sort > topo15.csv
-$python3 convdep.py > gen15.txt
+cd in_topo/
+$grep  ^991008415 topo-fichier-des-entites-topographiques.csv | sort > topo_15.csv
+```
+
+### Transformation du fichier TOPO en un fichier FANTOIR
+
+```
+cd ..
+$python3 convdep.py > out_fantoir/gen15.txt
 ```
 
 et comparer le résultat avec un fichier fantoir de l'année précédente trié,
 pour retrouver plus facilement les nouvelles lignes - ne pas hesiter a comparer
 commune par commune.
 
-# DISCLAIMER
 
-aucune garantie n'est apportée sur le résultat fourni.
+## Table des régions
+
+| REG | LIBELLE                      |
+|-----|------------------------------|
+| 1   | Guadeloupe                   |
+| 2   | Martinique                   |
+| 3   | Guyane                       |
+| 4   | La Réunion                   |
+| 6   | Mayotte                      |
+| 11  | Île-de-France                |
+| 24  | Centre-Val de Loire          |
+| 27  | Bourgogne-Franche-Comté      |
+| 28  | Normandie                    |
+| 32  | Hauts-de-France              |
+| 44  | Grand Est                    |
+| 52  | Pays de la Loire             |
+| 53  | Bretagne                     |
+| 75  | Nouvelle-Aquitaine           |
+| 76  | Occitanie                    |
+| 84  | Auvergne-Rhône-Alpes         |
+| 93  | Provence-Alpes-Côte d'Azur   |
+| 94  | Corse                        |
+
