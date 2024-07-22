@@ -59,14 +59,15 @@ $grep  ^991008415 topo-fichier-des-entites-topographiques.csv | sort > topo_15.c
 
 ### Transformation du fichier TOPO en un fichier FANTOIR
 
+Il faut passer le nom d'un fichier contenu dans le répertoire `in_topo`. Exemple :
+
 ```
-cd ..
-$python3 convdep.py > out_fantoir/gen15.txt
+$python3 convdep.py > topo_14.csv
 ```
 
-et comparer le résultat avec un fichier fantoir de l'année précédente trié,
-pour retrouver plus facilement les nouvelles lignes - ne pas hesiter a comparer
-commune par commune.
+Cela produira un fichier `FANTOIR` dans le répertoire `out_fantoir`.
+
+Ne pas oublier de comparer le résultat avec un fichier FANTOIR de l'année précédente trié, pour retrouver plus facilement les nouvelles lignes. Ne pas hésiter à comparer commune par commune.
 
 
 ## Table des régions
