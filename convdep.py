@@ -7,80 +7,12 @@ from locale import atoi
 
 salph = "ABCDEFGHJKLMNPRSTUVWXYZ"
 alph = "0123456789ABCDEFGHJKLMNPRSTUVWXYZ"
-# list constructed by hand on dept 15 entries
-# full list in p6 of FANR descr
-natv = (
-    "ACH ",
-    "AV  ",
-    "ALL ",
-    "AUT ",
-    "BD  ",
-    "CAR ",
-    "CASR",
-    "CC  ",
-    "CD  ",
-    "CHE ",
-    "CHEM",
-    "CLOS",
-    "COTE",
-    "COUR",
-    "CR  ",
-    "CRS ",
-    "CITE",
-    "CTRE",
-    "D   ",
-    "DSC ",
-    "DOM ",
-    "ENC ",
-    "ESP ",
-    "ESPA",
-    "FG  ",
-    "GR  ",
-    "HAM ",
-    "HLM ",
-    "IMP ",
-    "LIGN",
-    "LOT ",
-    "MAIS",
-    "MAIL",
-    "MTE ",
-    "N   ",
-    "NTE ",
-    "PAS ",
-    "PL  ",
-    "PLA ",
-    "PARC",
-    "PASS",
-    "PLE ",
-    "PONT",
-    "PROM",
-    "PTE ",
-    "PTR ",
-    "QUA ",
-    "QUAI",
-    "RES ",
-    "RLE ",
-    "ROC ",
-    "RPE ",
-    "RPT ",
-    "RTE ",
-    "RUE ",
-    "RUIS",
-    "SEN ",
-    "SQ  ",
-    "TOUR",
-    "TRA ",
-    "TSSE",
-    "V   ",
-    "VC  ",
-    "VEN ",
-    "VGE ",
-    "VOIE",
-    "ZA  ",
-    "ZAC ",
-    "ZONE",
-)
 
+natv = list()
+with open("natv.txt", "r") as natvf:
+    natv = natvf.read().split('\n')
+# TOPO contient ces valeurs aussi pour nationale/departementale/voie ?
+natv.extend(("N   ", "D   ", "V   "))
 
 # https://python.jpvweb.com/python/mesrecettespython/doku.php?id=calcul_de_dates#donne_le_numero_du_jour_de_l_annee
 def numjouran(j, m, a):
