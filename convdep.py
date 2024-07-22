@@ -10,9 +10,10 @@ alph = "0123456789ABCDEFGHJKLMNPRSTUVWXYZ"
 
 natv = list()
 with open("natv.txt", "r") as natvf:
-    natv = natvf.read().split('\n')
+    natv = natvf.read().split("\n")
 # TOPO contient ces valeurs aussi pour nationale/departementale/voie ?
 natv.extend(("N   ", "D   ", "V   "))
+
 
 # https://python.jpvweb.com/python/mesrecettespython/doku.php?id=calcul_de_dates#donne_le_numero_du_jour_de_l_annee
 def numjouran(j, m, a):
