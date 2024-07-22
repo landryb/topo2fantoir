@@ -202,9 +202,9 @@ def main():
     Ce script permet de créer un fichier compatible FANTOIR à partir des données TOPO.
     
     En argument mettre le nom du fichier TOPO à traiter qui est dans le répertoire 'in_topo'
-    et redirigé la sortie consol dans un fichier.
+    et redirigé la sortie console dans un fichier.
     
-    Exemple : convdep.py topo_14.csv > out_fantoir/fantoir_14
+    Exemple : convdep.py topo_14.csv
     
     """, formatter_class=RawTextHelpFormatter)
 
