@@ -4,6 +4,7 @@
 
 import sys
 import csv
+import codecs
 from locale import atoi
 import argparse
 from argparse import RawTextHelpFormatter
@@ -20,6 +21,11 @@ with open("natv.txt", "r") as natvf:
 # TOPO contient ces valeurs aussi pour nationale/departementale/voie ?
 natv.extend(("N   ", "D   ", "V   "))
 
+# les variables globales dans lesquelles on va stocker les données
+#global fantoir_output
+fantoir_output = ""
+
+#
 
 # jour courant
 date = datetime.datetime.now()
@@ -124,7 +130,7 @@ def print_voie(row, curtypecomm, currurcomm):
         "caracterelieudit": carlieudit,
         "motclassant": row["mot classant"],
     }
-    print(
+    ecrire_dans_fichier_fantoir(
         "{dept}0{inseerivo}{clerivo}{natvoie}{libelle}{curtypecomm}  {currurcomm}  {caracterevoie}          {nopopinfo} {datecreation}{nocodemajic}{typevoie}{caracterelieudit}  {motclassant}".format(
             **args
         )
@@ -153,7 +159,7 @@ def print_commune(row, curtypecomm, currurcomm):
         "datecreation": sdate.rjust(14, "0"),
         "motclassant": row["mot classant"],
     }
-    print(
+    ecrire_dans_fichier_fantoir(
         "{dept}0{inseerivo}{clerivo}{libelle}{curtypecomm}  {currurcomm}{nopopinfo} {datecreation}".format(
             **args
         )
@@ -174,8 +180,13 @@ def print_dep(row):
         "zero": "".ljust(14, "0"),
         "datecreation": sdate.rjust(14, "0"),
     }
-    print("{dept}0        {libelle}{zero} {datecreation}".format(**args))
+    ecrire_dans_fichier_fantoir("{dept}0        {libelle}{zero} {datecreation}".format(**args))
 
+    pass
+
+
+def ecrire_dans_fichier_fantoir(contenu):
+    fichier_fantoir.write(contenu + "\n")
     pass
 
 
@@ -217,47 +228,84 @@ def main():
     logging.info("Début du script")
     logging.info("")
 
-    with open(f"in_topo/{fichier_topo}", newline="") as csvfile:
-        reader = csv.DictReader(
-            csvfile,
-            delimiter=";",
-            fieldnames=(
-                "code topo",
-                "libelle",
-                "type commune actuel (R ou N)",
-                "type commune FIP (RouNFIP)",
-                "RUR actuel",
-                "RUR FIP",
-                "caractere voie",
-                "annulation",
-                "date annulation",
-                "date creation de article",
-                "type voie",
-                "mot classant",
-                "date derniere transition",
-            ),
-        )
-        curtypecomm = None
-        currurcomm = None
-        curcomm = None
-        for row in reader:
-            type_enr = row["code topo"][16:18]
-            code_insee = row["code topo"][8:13]
-            if type_enr == "12":
-                # departement
-                print_dep(row)
-            elif type_enr == "13":
-                # commune
-                curcomm = code_insee
-                curtypecomm = row["type commune actuel (R ou N)"]
-                currurcomm = row["RUR actuel"]
-                if curtypecomm == "R" and currurcomm == "":
-                    currurcomm = " "
-                print_commune(row, curtypecomm, currurcomm)
-            elif type_enr == "14":
-                # voie
-                print_voie(row, curtypecomm, currurcomm)
+    # Ouvrir un fichier en écriture avec l'encodage UTF-8 en utilisant le module codecs
+    try:
 
+        fichier_fantoir_nom = "FANTOIR"
+        fichier_fantoir_path = f"out_fantoir/{fichier_fantoir_nom}"
+
+        logging.info(f"Création du fichier de sortie {fichier_fantoir_path}")
+
+        global fichier_fantoir
+        fichier_fantoir = codecs.open(fichier_fantoir_path, 'w', encoding='utf-8')
+
+        logging.info("fait")
+        logging.info("")
+
+    except:
+        logging.error(f"Impossible d'initialiser le fichier de sortie out_fantoir/{fichier_fantoir}")
+        logging.error("ARRÊT")
+        sys.exit(1)
+
+    #
+
+    # on ouvre le fichier TOPO à traiter
+    fichier_topo_nom = fichier_topo
+    fichier_topo_path = f"in_topo/{fichier_topo}"
+    logging.info(f"Traitement du fichier {fichier_topo_path}")
+    logging.info("")
+
+    try:
+        with open(fichier_topo_path, newline="") as csvfile:
+            reader = csv.DictReader(
+                csvfile,
+                delimiter=";",
+                fieldnames=(
+                    "code topo",
+                    "libelle",
+                    "type commune actuel (R ou N)",
+                    "type commune FIP (RouNFIP)",
+                    "RUR actuel",
+                    "RUR FIP",
+                    "caractere voie",
+                    "annulation",
+                    "date annulation",
+                    "date creation de article",
+                    "type voie",
+                    "mot classant",
+                    "date derniere transition",
+                ),
+            )
+
+            curtypecomm = None
+            currurcomm = None
+            curcomm = None
+
+            for row in reader:
+                type_enr = row["code topo"][16:18]
+                code_insee = row["code topo"][8:13]
+                if type_enr == "12":
+                    # departement
+                    print_dep(row)
+                    pass
+                elif type_enr == "13":
+                    # commune
+                    curcomm = code_insee
+                    curtypecomm = row["type commune actuel (R ou N)"]
+                    currurcomm = row["RUR actuel"]
+                    if curtypecomm == "R" and currurcomm == "":
+                        currurcomm = " "
+                    print_commune(row, curtypecomm, currurcomm)
+                    pass
+                elif type_enr == "14":
+                    # voie
+                    print_voie(row, curtypecomm, currurcomm)
+                    pass
+
+    except Exception as e:
+        logging.error("Quelque chose s'est mal passé !")
+        logging.error(f"{e}")
+        sys.exit(1)
 
     #
 
