@@ -280,6 +280,7 @@ def main():
             curtypecomm = None
             currurcomm = None
             curcomm = None
+            cpt = 0
 
             for row in reader:
                 type_enr = row["code topo"][16:18]
@@ -302,6 +303,15 @@ def main():
                     print_voie(row, curtypecomm, currurcomm)
                     pass
 
+                # incrément du compteur de lignes
+                cpt += 1
+
+                # une sortie pour faire joli
+                if cpt % 10000 == 0:
+                    logging.info(f"{cpt} lignes traitées")
+
+            logging.info(f"{cpt} lignes traitées en tout")
+
     except Exception as e:
         logging.error("Quelque chose s'est mal passé !")
         logging.error(f"{e}")
@@ -309,6 +319,9 @@ def main():
 
     #
 
+
+
+    logging.info("")
     logging.info("F I N")
 
     # chrono final
