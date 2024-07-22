@@ -230,7 +230,6 @@ def main():
 
     # Ouvrir un fichier en écriture avec l'encodage UTF-8 en utilisant le module codecs
     try:
-
         fichier_fantoir_nom = "FANTOIR"
         fichier_fantoir_path = f"out_fantoir/{fichier_fantoir_nom}"
 
@@ -242,8 +241,9 @@ def main():
         logging.info("fait")
         logging.info("")
 
-    except:
+    except Exception as e:
         logging.error(f"Impossible d'initialiser le fichier de sortie out_fantoir/{fichier_fantoir}")
+        logging.error(f"{e}")
         logging.error("ARRÊT")
         sys.exit(1)
 
