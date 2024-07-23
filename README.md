@@ -62,10 +62,13 @@ $grep  ^991008415 topo-fichier-des-entites-topographiques.csv | sort > topo_15.c
 Il faut passer le nom d'un fichier contenu dans le répertoire `in_topo`. Exemple :
 
 ```
-$python3 convdep.py > topo_14.csv
+$python3 convdep.py topo_14.csv
 ```
 
 Cela produira un fichier `FANTOIR` dans le répertoire `out_fantoir`.
+
+Il y a également une option `--stdout` qui permet de sortir le résultat dans la console.
+
 
 Ne pas oublier de comparer le résultat avec un fichier FANTOIR de l'année précédente trié, pour retrouver plus facilement les nouvelles lignes. Ne pas hésiter à comparer commune par commune.
 
