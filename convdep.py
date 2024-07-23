@@ -3,6 +3,7 @@
 # vim: ts=4 sw=4 et
 
 import csv
+import sys
 from locale import atoi
 
 salph = "ABCDEFGHJKLMNPRSTUVWXYZ"
@@ -127,7 +128,7 @@ def print_dep(row):
     print("{dept}0        {libelle}{zero} {datecreation}".format(**args))
 
 
-with open("topo15-sorted.csv", newline="") as csvfile:
+with open(sys.argv[1], newline="") as csvfile:
     reader = csv.DictReader(
         csvfile,
         delimiter=";",
