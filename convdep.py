@@ -70,7 +70,7 @@ def print_voie(row, curtypecomm, currurcomm):
         "caracterevoie": row["caractere voie"],
         "nopopinfo": "".ljust(14, "0"),
         "datecreation": sdate.rjust(14, "0"),
-        "nocodemajic": "".ljust(22),
+        "nocodemajic": "".ljust(20),
         "typevoie": row["type voie"],
         "caracterelieudit": carlieudit,
         "motclassant": row["mot classant"],
