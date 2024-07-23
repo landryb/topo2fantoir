@@ -102,7 +102,6 @@ def print_commune(row, curtypecomm, currurcomm):
         "currurcomm": currurcomm,
         "nopopinfo": "      " + "".ljust(21, "0"),
         "datecreation": sdate.rjust(14, "0"),
-        "motclassant": row["mot classant"],
     }
     print(
         "{dept}0{inseerivo}{clerivo}{libelle}{curtypecomm}  {currurcomm}{nopopinfo} {datecreation}".format(
