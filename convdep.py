@@ -22,7 +22,6 @@ with open("natv.txt", "r") as natvf:
 natv.extend(("N   ", "D   ", "V   "))
 
 # les variables globales dans lesquelles on va stocker les données
-#global fantoir_output
 fantoir_output = ""
 
 #
@@ -130,11 +129,18 @@ def print_voie(row, curtypecomm, currurcomm):
         "caracterelieudit": carlieudit,
         "motclassant": row["mot classant"],
     }
-    ecrire_dans_fichier_fantoir(
-        "{dept}0{inseerivo}{clerivo}{natvoie}{libelle}{curtypecomm}  {currurcomm}  {caracterevoie}          {nopopinfo} {datecreation}{nocodemajic}{typevoie}{caracterelieudit}  {motclassant}".format(
-            **args
+    if stdout_mode is False:
+        ecrire_dans_fichier_fantoir(
+            "{dept}0{inseerivo}{clerivo}{natvoie}{libelle}{curtypecomm}  {currurcomm}  {caracterevoie}          {nopopinfo} {datecreation}{nocodemajic}{typevoie}{caracterelieudit}  {motclassant}".format(
+                **args
+            )
         )
-    )
+    else:
+        print(
+            "{dept}0{inseerivo}{clerivo}{natvoie}{libelle}{curtypecomm}  {currurcomm}  {caracterevoie}          {nopopinfo} {datecreation}{nocodemajic}{typevoie}{caracterelieudit}  {motclassant}".format(
+                **args
+            )
+        )
 
 
 def print_commune(row, curtypecomm, currurcomm):
@@ -159,11 +165,19 @@ def print_commune(row, curtypecomm, currurcomm):
         "datecreation": sdate.rjust(14, "0"),
         "motclassant": row["mot classant"],
     }
-    ecrire_dans_fichier_fantoir(
-        "{dept}0{inseerivo}{clerivo}{libelle}{curtypecomm}  {currurcomm}{nopopinfo} {datecreation}".format(
-            **args
+
+    if stdout_mode is False:
+        ecrire_dans_fichier_fantoir(
+            "{dept}0{inseerivo}{clerivo}{libelle}{curtypecomm}  {currurcomm}{nopopinfo} {datecreation}".format(
+                **args
+            )
         )
-    )
+    else:
+        print(
+            "{dept}0{inseerivo}{clerivo}{libelle}{curtypecomm}  {currurcomm}{nopopinfo} {datecreation}".format(
+                **args
+            )
+        )
 
 
 def print_dep(row):
@@ -180,7 +194,11 @@ def print_dep(row):
         "zero": "".ljust(14, "0"),
         "datecreation": sdate.rjust(14, "0"),
     }
-    ecrire_dans_fichier_fantoir("{dept}0        {libelle}{zero} {datecreation}".format(**args))
+
+    if stdout_mode is False:
+        ecrire_dans_fichier_fantoir("{dept}0        {libelle}{zero} {datecreation}".format(**args))
+    else:
+        print("{dept}0        {libelle}{zero} {datecreation}".format(**args))
 
     pass
 
@@ -201,15 +219,20 @@ def main():
 
     Ce script permet de créer un fichier compatible FANTOIR à partir des données TOPO.
     
-    En argument mettre le nom du fichier TOPO à traiter qui est dans le répertoire 'in_topo'
-    et redirigé la sortie console dans un fichier.
+    En argument mettre le nom du fichier TOPO à traiter qui est dans le répertoire 'in_topo'.
+    En sortie on obtient un fichier FANTOIR dans le répertoire 'out_topo'.
     
     Exemple : convdep.py topo_14.csv
+    
+    En option, on peut aussi sortir le résultat dans la console avec --stdout.
+    Exemple : convdep.py topo_14.csv --stdout
     
     """, formatter_class=RawTextHelpFormatter)
 
     # test des variables passées
     fichier_topo = False
+    global stdout_mode
+    stdout_mode = False
 
     try:
         fichier_topo = str(sys.argv[1])
@@ -220,40 +243,53 @@ def main():
         sys.exit(1)
         return
 
+    try:
+        stdout_mode = str(sys.argv[2])
+        if stdout_mode == '--stdout':
+            stdout_mode = True
+    except:
+        pass
+
+    #
+
     # si on est là, c'est que ça passe
 
     global start_time
     start_time = time.perf_counter()
 
-    logging.info("Début du script")
-    logging.info("")
-
-    # Ouvrir un fichier en écriture avec l'encodage UTF-8 en utilisant le module codecs
-    try:
-        fichier_fantoir_nom = "FANTOIR"
-        fichier_fantoir_path = f"out_fantoir/{fichier_fantoir_nom}"
-
-        logging.info(f"Création du fichier de sortie {fichier_fantoir_path}")
-
-        global fichier_fantoir
-        fichier_fantoir = codecs.open(fichier_fantoir_path, 'w', encoding='utf-8')
-
-        logging.info("fait")
+    if stdout_mode is False:
+        logging.info("Début du script")
         logging.info("")
 
-    except Exception as e:
-        logging.error(f"Impossible d'initialiser le fichier de sortie out_fantoir/{fichier_fantoir}")
-        logging.error(f"{e}")
-        logging.error("ARRÊT")
-        sys.exit(1)
+    # Ouvrir un fichier en écriture avec l'encodage UTF-8 en utilisant le module codecs
+    if stdout_mode is False:
+        try:
+            fichier_fantoir_nom = "FANTOIR"
+            fichier_fantoir_path = f"out_fantoir/{fichier_fantoir_nom}"
+
+            if stdout_mode is False:
+                logging.info(f"Création du fichier de sortie {fichier_fantoir_path}")
+
+            global fichier_fantoir
+            fichier_fantoir = codecs.open(fichier_fantoir_path, 'w', encoding='utf-8')
+
+            logging.info("fait")
+            logging.info("")
+
+        except Exception as e:
+            logging.error(f"Impossible d'initialiser le fichier de sortie out_fantoir/{fichier_fantoir}")
+            logging.error(f"{e}")
+            logging.error("ARRÊT")
+            sys.exit(1)
 
     #
 
     # on ouvre le fichier TOPO à traiter
     fichier_topo_nom = fichier_topo
     fichier_topo_path = f"in_topo/{fichier_topo}"
-    logging.info(f"Traitement du fichier {fichier_topo_path}")
-    logging.info("")
+    if stdout_mode is False:
+        logging.info(f"Traitement du fichier {fichier_topo_path}")
+        logging.info("")
 
     try:
         with open(fichier_topo_path, newline="") as csvfile:
@@ -306,11 +342,13 @@ def main():
                 # incrément du compteur de lignes
                 cpt += 1
 
-                # une sortie pour faire joli
-                if cpt % 10000 == 0:
-                    logging.info(f"{cpt} lignes traitées")
+                if stdout_mode is False:
+                    # une sortie pour faire joli
+                    if cpt % 10000 == 0:
+                        logging.info(f"{cpt} lignes traitées")
 
-            logging.info(f"{cpt} lignes traitées en tout")
+            if stdout_mode is False:
+                logging.info(f"{cpt} lignes traitées en tout")
 
     except Exception as e:
         logging.error("Quelque chose s'est mal passé !")
@@ -319,15 +357,14 @@ def main():
 
     #
 
+    if stdout_mode is False:
+        logging.info("")
+        logging.info("F I N")
 
-
-    logging.info("")
-    logging.info("F I N")
-
-    # chrono final
-    final_chrono = get_chrono(start_time, time.perf_counter())
-    logging.info(f"Temps total : {final_chrono}")
-    logging.info("")
+        # chrono final
+        final_chrono = get_chrono(start_time, time.perf_counter())
+        logging.info(f"Temps total : {final_chrono}")
+        logging.info("")
 
     pass
 
