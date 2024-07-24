@@ -20,7 +20,8 @@ natv.extend(("N   ", "D   ", "V   "))
 
 outfd = sys.stdout
 
-logging.basicConfig(level=logging.INFO, format='%(message)s')
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+
 
 # https://python.jpvweb.com/python/mesrecettespython/doku.php?id=calcul_de_dates#donne_le_numero_du_jour_de_l_annee
 def numjouran(j, m, a):
