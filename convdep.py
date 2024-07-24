@@ -156,11 +156,20 @@ parser.add_argument("-i", "--infile", help="le fichier CSV a traiter", required=
 parser.add_argument("-o", "--outfile", help="le nom du fichier de sortie")
 
 args = parser.parse_args()
-print(args)
 if args.outfile:
-    outfd = codecs.open(args.outfile, "w", encoding="utf-8")
+    try:
+        outfd = codecs.open(args.outfile, "w", encoding="utf-8")
+    except FileNotFoundError:
+        print(f"impossible d'ouvrir {args.outfile} en écriture")
+        sys.exit(1)
 
-with open(args.infile, newline="") as csvfile:
+try:
+    csvfile = open(args.infile, newline="")
+except FileNotFoundError:
+    print(f"impossible d'ouvrir {args.infile} en lecture")
+    sys.exit(1)
+
+with csvfile:
     reader = csv.DictReader(
         csvfile,
         delimiter=";",
