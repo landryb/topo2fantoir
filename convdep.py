@@ -6,6 +6,7 @@ import csv
 import argparse
 import codecs
 import sys
+import logging
 from locale import atoi
 
 salph = "ABCDEFGHJKLMNPRSTUVWXYZ"
@@ -19,6 +20,7 @@ natv.extend(("N   ", "D   ", "V   "))
 
 outfd = sys.stdout
 
+logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 # https://python.jpvweb.com/python/mesrecettespython/doku.php?id=calcul_de_dates#donne_le_numero_du_jour_de_l_annee
 def numjouran(j, m, a):
@@ -109,6 +111,7 @@ def print_commune(row, curtypecomm, currurcomm):
         "nopopinfo": "      " + "".ljust(21, "0"),
         "datecreation": sdate.rjust(14, "0"),
     }
+    logging.info(f"commune {code[7:12]} ({row['libelle']})")
     print(
         "{dept}0{inseerivo}{clerivo}{libelle}{curtypecomm}  {currurcomm}{nopopinfo} {datecreation}".format(
             **args
