@@ -3,6 +3,8 @@
 # vim: ts=4 sw=4 et
 
 import csv
+import argparse
+import codecs
 import sys
 from locale import atoi
 
@@ -14,6 +16,8 @@ with open("natv.txt", "r") as natvf:
     natv = natvf.read().split("\n")
 # TOPO contient ces valeurs aussi pour nationale/departementale/voie ?
 natv.extend(("N   ", "D   ", "V   "))
+
+outfd = sys.stdout
 
 
 # https://python.jpvweb.com/python/mesrecettespython/doku.php?id=calcul_de_dates#donne_le_numero_du_jour_de_l_annee
@@ -79,7 +83,8 @@ def print_voie(row, curtypecomm, currurcomm):
     print(
         "{dept}0{inseerivo}{clerivo}{natvoie}{libelle}{curtypecomm}  {currurcomm}  {caracterevoie}          {nopopinfo} {datecreation}{nocodemajic}{typevoie}{caracterelieudit}  {motclassant}".format(
             **args
-        )
+        ),
+        file=outfd,
     )
 
 
@@ -107,7 +112,8 @@ def print_commune(row, curtypecomm, currurcomm):
     print(
         "{dept}0{inseerivo}{clerivo}{libelle}{curtypecomm}  {currurcomm}{nopopinfo} {datecreation}".format(
             **args
-        )
+        ),
+        file=outfd,
     )
 
 
@@ -125,10 +131,36 @@ def print_dep(row):
         "zero": "".ljust(14, "0"),
         "datecreation": sdate.rjust(14, "0"),
     }
-    print("{dept}0        {libelle}{zero} {datecreation}".format(**args))
+    print("{dept}0        {libelle}{zero} {datecreation}".format(**args), file=outfd)
 
 
-with open(sys.argv[1], newline="") as csvfile:
+parser = argparse.ArgumentParser(
+    description="""
+
+    Ce script permet de créer un fichier compatible FANTOIR à partir des données TOPO.
+
+    La sortie par défaut est sur la console, avec les messages de logging sur stderr.
+
+    Exemple : python3 convdep.py -i TOPO_15.csv > FANR_15.txt
+
+    En option (pour les systèmes ne sachant pas gérer correctement les
+    sorties), on peut aussi écrire le résultat dans un fichier avec -o
+
+    Exemple : python3 convdep.py -i TOPO_15.csv -o FANR_15.txt
+
+    """,
+    formatter_class=argparse.RawTextHelpFormatter,
+)
+
+parser.add_argument("-i", "--infile", help="le fichier CSV a traiter", required=True)
+parser.add_argument("-o", "--outfile", help="le nom du fichier de sortie")
+
+args = parser.parse_args()
+print(args)
+if args.outfile:
+    outfd = codecs.open(args.outfile, "w", encoding="utf-8")
+
+with open(args.infile, newline="") as csvfile:
     reader = csv.DictReader(
         csvfile,
         delimiter=";",
