@@ -62,8 +62,14 @@ tests=(
 { 'code_topo': '991009313103V029', 'code_fantoir': '130103V029A' }, #dept 13: RES VERT BOCAGE
 { 'code_topo': '991009313001V110', 'code_fantoir': '130001V110G' }, #dept 13: CHATEAU DE LUYNES NORD
 { 'code_topo': '991002827467W109', 'code_fantoir': '270467W109X' }, #dept 27: LA SENTE MAILLERAIE
+{ 'code_topo': '991008401053X022', 'code_fantoir': '010053X022Z' }, #dept 01: PKG DES BONS ENFANTS
 { 'code_topo': '991008401288X006', 'code_fantoir': '010288X006J' }, #dept 01: PKG DE L'ETRAZ
 { 'code_topo': '991008415014X004', 'code_fantoir': '150014X004D' }, #dept 15: CANAL DE PEYROLLES
+# ces 2 voies avec Y comme première lettre du code rivoli ne se retrouvent plus avec le meme code rivoli dans TOPO -> changement de zone ?
+#fantoir:    160102Y004ECITELE CLOS GIRARDIN
+#topo: 991007516102102514;CITELE CLOS GIRARDIN
+#fantoir:    110069Y046K    DE STE MARIE
+#topo: 991007611069423814;CHE DE STE MARIE
 )
 if __name__ == '__main__':
     for t in tests:
