@@ -22,10 +22,6 @@ Il manque dans la sortie (infos non présentes dans TOPO) :
 - le champ 'indicateur lieu dit non bati'
 - les informations de population
 - pas encore de support des dom-tom (corse ok)
-- la clé rivoli est fausse pour les voies situées dans une commune ou le code
-  direction n'est pas 0 (arrive entre autres dans les départements 13, 59, 75
-  et 92) et l'information de 'direction des impots' est manquante dans TOPO
-
 
 ## Utilisation
 
