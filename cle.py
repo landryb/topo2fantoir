@@ -46,7 +46,7 @@ tests=(
 { 'code_topo': '99100942A142B221', 'code_fantoir': '2A0142B221V' }, #dept 2A: FILAGHIONE
 { 'code_topo': '99100942B002    ', 'code_fantoir': '2B0002    F' }, #dept 2B: commune d'AGHIONE
 { 'code_topo': '99100942B002B001', 'code_fantoir': '2B0002B001L' }, #dept 2B: AGHIONE
-{ 'code_topo': '991002814061I975', 'code_fantoir': '140061I975P' }, #dept 14: LES FARCIERES
+{ 'code_topo': '991002814061I975', 'code_fantoir': '140061I975U' }, #dept 14: LES FARCIERES
 { 'code_topo': '991005249331I874', 'code_fantoir': '490331I874W' }, #dept 49: GRANDE FROMENTRIE
 { 'code_topo': '991002850041I996', 'code_fantoir': '500041I996L' }, #dept 50: LA BISSONNERIE
 { 'code_topo': '991002850041J998', 'code_fantoir': '500041J998J' }, #dept 50: LA RIGNOLETTERIE VAUVILLE
@@ -70,7 +70,7 @@ tests=(
 { 'code_topo': '991009313001V110', 'code_fantoir': '130001V110G' }, #dept 13: CHATEAU DE LUYNES NORD
 { 'code_topo': '991002827467W109', 'code_fantoir': '270467W109X' }, #dept 27: LA SENTE MAILLERAIE
 { 'code_topo': '991008401053X022', 'code_fantoir': '010053X022Z' }, #dept 01: PKG DES BONS ENFANTS
-{ 'code_topo': '991008401288X006', 'code_fantoir': '010288X006J' }, #dept 01: PKG DE L'ETRAZ
+{ 'code_topo': '991008401288X006', 'code_fantoir': '010288X006K' }, #dept 01: PKG DE L'ETRAZ
 { 'code_topo': '991008415014X004', 'code_fantoir': '150014X004D' }, #dept 15: CANAL DE PEYROLLES
 # ces 2 voies avec Y comme première lettre du code rivoli ne se retrouvent plus avec le meme code rivoli dans TOPO -> changement de zone ?
 #fantoir:    160102Y004ECITELE CLOS GIRARDIN
