@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # vim: ts=4 sw=4 et
 
+import csv
 from locale import atoi
 
 salph = "ABCDEFGHJKLMNPRSTUVWXYZ"
@@ -9,6 +10,11 @@ salph = "ABCDEFGHJKLMNPRSTUVWXYZ"
 alph = "0123456789ABCDEFGHJKLMNPRSTUVWXYZ"
 # full
 # alph = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+insee2dir = dict()
+with open("insee2dir.csv", "r") as insee2dirf:
+    r = csv.reader(insee2dirf, delimiter=";")
+    for row in r:
+        insee2dir[row[0]] = atoi(row[1])
 
 
 def compute_cle(code):
@@ -20,7 +26,8 @@ def compute_cle(code):
     else:
         dpt = atoi(code[7:9])
     ins = atoi(code[9:12])
-    comm = dpt * 10000 + ins
+    direction = insee2dir.get(code[7:12], 0)
+    comm = dpt * 10000 + direction * 1000 + ins
     riv = code[12:16]
     if riv == "    ":
         ordre = comm % 23
