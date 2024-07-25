@@ -52,7 +52,7 @@ def print_voie(row, curtypecomm, currurcomm):
     )
     args = {
         "dept": code[7:9],
-        "dir": insee2dir.get(code[7:12],"0"),
+        "dir": insee2dir.get(code[7:12], "0"),
         "inseerivo": code[9:16],
         "clerivo": compute_cle(code),
         "natvoie": natvoie,
@@ -88,7 +88,7 @@ def print_commune(row, curtypecomm, currurcomm):
         sdate = "1987001"
     args = {
         "dept": code[7:9],
-        "dir": insee2dir.get(code[7:12],"0"),
+        "dir": insee2dir.get(code[7:12], "0"),
         "inseerivo": code[9:16],
         "clerivo": compute_cle(code),
         "libelle": row["libelle"].ljust(31),
