@@ -8,9 +8,7 @@ import codecs
 import sys
 import logging
 from locale import atoi
-
-salph = "ABCDEFGHJKLMNPRSTUVWXYZ"
-alph = "0123456789ABCDEFGHJKLMNPRSTUVWXYZ"
+from cle import compute_cle
 
 natv = list()
 with open("natv.txt", "r") as natvf:
@@ -30,29 +28,6 @@ def numjouran(j, m, a):
         return (0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366)[m - 1] + j
     else:
         return (0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365)[m - 1] + j
-
-
-# https://georezo.net/forum/viewtopic.php?id=102292
-def compute_cle(code):
-    if code[7:9] == '2A':
-        dpt = 3
-    elif code[7:9] == '2B':
-        dpt = 4
-    else:
-        dpt = atoi(code[7:9])
-    ins = atoi(code[9:12])
-    comm = dpt * 10000 + ins
-    riv = code[12:16]
-    if riv == "    ":  # code d'une commune
-        ordre = comm % 23
-    else:  # code d'une voie
-        numv = atoi(riv[1:4])
-        try:
-            code = alph.index(riv[0])
-        except:
-            logging.error(f"fail on '{riv}' (code={code})")
-        ordre = ((19 * comm) + (11 * code) + numv) % 23
-    return salph[ordre]
 
 
 def print_voie(row, curtypecomm, currurcomm):
