@@ -47,9 +47,17 @@ tests = (
         "code_fantoir": "150258    Z",
     },  # dept 15: commune de VIC-SUR-CERE
     {
+        "code_topo": "991009313002    ",
+        "code_fantoir": "131002    U",
+    },  # dept 13: commune d'ALLAUCH (direction 1)
+    {
         "code_topo": "9910084014570690",
         "code_fantoir": "0104570690K",
     },  # dept 01: RTE DE NAMARY
+    {
+        "code_topo": "9910093132101299",
+        "code_fantoir": "1312101299J",
+    },  # dept 13: IMP BONNAUD (direction 2)
     {
         "code_topo": "991008415001A030",
         "code_fantoir": "150001A030Z",
@@ -153,11 +161,11 @@ tests = (
     {
         "code_topo": "991009313103V029",
         "code_fantoir": "132103V029F",
-    },  # dept 13: RES VERT BOCAGE ## XX code direction != 0
+    },  # dept 13: RES VERT BOCAGE (direction 2)
     {
         "code_topo": "991009313001V110",
         "code_fantoir": "132001V110M",
-    },  # dept 13: CHATEAU DE LUYNES NORD # XX code direction != 0
+    },  # dept 13: CHATEAU DE LUYNES NORD (direction 2)
     {
         "code_topo": "991002827467W109",
         "code_fantoir": "270467W109X",
