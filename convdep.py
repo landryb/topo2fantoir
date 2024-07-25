@@ -8,7 +8,7 @@ import codecs
 import sys
 import logging
 from locale import atoi
-from cle import compute_cle
+from cle import compute_cle, insee2dir
 
 natv = list()
 with open("natv.txt", "r") as natvf:
@@ -52,6 +52,7 @@ def print_voie(row, curtypecomm, currurcomm):
     )
     args = {
         "dept": code[7:9],
+        "dir": insee2dir.get(code[7:12],"0"),
         "inseerivo": code[9:16],
         "clerivo": compute_cle(code),
         "natvoie": natvoie,
@@ -67,7 +68,7 @@ def print_voie(row, curtypecomm, currurcomm):
         "motclassant": row["mot classant"],
     }
     print(
-        "{dept}0{inseerivo}{clerivo}{natvoie}{libelle}{curtypecomm}  {currurcomm}  {caracterevoie}          {nopopinfo} {datecreation}{nocodemajic}{typevoie}{caracterelieudit}  {motclassant}".format(
+        "{dept}{dir}{inseerivo}{clerivo}{natvoie}{libelle}{curtypecomm}  {currurcomm}  {caracterevoie}          {nopopinfo} {datecreation}{nocodemajic}{typevoie}{caracterelieudit}  {motclassant}".format(
             **args
         ),
         file=outfd,
@@ -87,6 +88,7 @@ def print_commune(row, curtypecomm, currurcomm):
         sdate = "1987001"
     args = {
         "dept": code[7:9],
+        "dir": insee2dir.get(code[7:12],"0"),
         "inseerivo": code[9:16],
         "clerivo": compute_cle(code),
         "libelle": row["libelle"].ljust(31),
@@ -95,9 +97,9 @@ def print_commune(row, curtypecomm, currurcomm):
         "nopopinfo": "      " + "".ljust(21, "0"),
         "datecreation": sdate.rjust(14, "0"),
     }
-    logging.info(f"commune {code[7:12]} ({row['libelle']})")
+    logging.info(f"commune {code[7:12]} (dir {args['dir']}) ({row['libelle']})")
     print(
-        "{dept}0{inseerivo}{clerivo}{libelle}{curtypecomm}  {currurcomm}{nopopinfo} {datecreation}".format(
+        "{dept}{dir}{inseerivo}{clerivo}{libelle}{curtypecomm}  {currurcomm}{nopopinfo} {datecreation}".format(
             **args
         ),
         file=outfd,
@@ -105,6 +107,7 @@ def print_commune(row, curtypecomm, currurcomm):
 
 
 def print_dep(row):
+    # XX no support for non-0 direction
     # 991008415       12;CANTAL;;;;;;;00000000;17900304;;;00000000
     # 150        CANTAL                                          00000000000000 00000000000000
     code = row["code topo"]
