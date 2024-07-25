@@ -4,8 +4,8 @@
 
 from locale import atoi
 salph = "ABCDEFGHJKLMNPRSTUVWXYZ"
-# without U and Z
-alph = "0123456789ABCDEFGHIJKLMNOPQRSTVWXY"
+# without I. O and Q
+alph = "0123456789ABCDEFGHJKLMNPRSTUVWXYZ"
 #full
 #alph = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -24,7 +24,14 @@ def compute_cle(code):
         ordre = comm % 23
     else:
         numv = atoi(riv[1:4])
-        code = alph.index(riv[0])
+        if riv[0] == 'I':
+            code = alph.index('A')
+        elif riv[0] == 'O':
+            code = alph.index('B')
+        elif riv[0] == 'Q':
+            code = alph.index('C')
+        else:
+            code = alph.index(riv[0])
 #        print('numv={}, riv[0] = {} -> index = {}'.format(numv, riv[0], code))
         ordre = ((19 * comm) + (11 * code) + numv) % 23
 #    print("dpt={}, ins={}, commune={}, code riv='{}' -> ordre={}".format(dpt,ins,comm, riv, ordre))
