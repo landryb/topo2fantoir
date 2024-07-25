@@ -47,7 +47,10 @@ def compute_cle(code):
         ordre = comm % 23
     else:  # code d'une voie
         numv = atoi(riv[1:4])
-        code = alph.index(riv[0])
+        try:
+            code = alph.index(riv[0])
+        except:
+            logging.error(f"fail on '{riv}' (code={code})")
         ordre = ((19 * comm) + (11 * code) + numv) % 23
     return salph[ordre]
 
