@@ -34,7 +34,12 @@ def numjouran(j, m, a):
 
 # https://georezo.net/forum/viewtopic.php?id=102292
 def compute_cle(code):
-    dpt = atoi(code[7:9])
+    if code[7:9] == '2A':
+        dpt = 3
+    elif code[7:9] == '2B':
+        dpt = 4
+    else:
+        dpt = atoi(code[7:9])
     ins = atoi(code[9:12])
     comm = dpt * 10000 + ins
     riv = code[12:16]
