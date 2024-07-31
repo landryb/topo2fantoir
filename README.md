@@ -77,7 +77,7 @@ TOPO. Exemple :
 $python3 convdep.py -i topo_15.csv > FANR_15.txt
 ```
 
-Cela produira un fichier `FANR_15.txt dans le répertoire courant.
+Cela produira un fichier `FANR_15.txt` dans le répertoire courant.
 
 Pour les systèmes ne gérant pas correctement les redirections, il y'a également
 une option `-o` pour écrire directement le résultat dans un fichier.
