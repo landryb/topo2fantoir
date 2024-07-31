@@ -23,6 +23,15 @@ Il manque dans la sortie (infos non présentes dans TOPO) :
 - les informations de population
 - pas encore de support des dom-tom (corse ok)
 
+## Résultats
+
+Pour ceux qui ne veulent/peuvent pas faire tourner le script et veulent juste
+récupérer des fichiers départementaux au format TOPO ou FANTOIR, ils sont
+disponibles sur le [drive opendata](https://drive.opendata.craig.fr/s/opendata)
+du CRAIG:
+- [FANTOIR par département Juillet 2024](https://drive.opendata.craig.fr/s/opendata?path=%2Fadresse%2Ffantoir)
+- [TOPO par département Juillet 2024](https://drive.opendata.craig.fr/s/opendata?path=%2Fadresse%2Ftopo)
+
 ## Utilisation
 
 ### prérequis
