@@ -33,17 +33,13 @@ def numjouran(j, m, a):
 def print_voie(row, curtypecomm, currurcomm):
     # 991008415001000114;GR  GRANDE RUE ABBE DE PRADT;;;;;0;;00000000;19870101;1;PRADT;20050524
     # 1500010001YGR  GRANDE RUE ABBE DE PRADT   N  3  0          00000000000000 00000001987001               002621   PRADT
-    code = row["code topo"]
-    date = row["date creation de article"]
-    natvoie = "    "
-    if row["libelle"][0:4] in natv:
-        natvoie = row["libelle"][0:4]
-        libelle = row["libelle"][4:].ljust(27)
-    else:
-        libelle = row["libelle"].ljust(27)
+    code = row["code_topo"]
+    date = row["date_creation_de_article"]
+    natvoie = row["nature_de_la_voie"].ljust(4)
+    libelle = row["libelle"].ljust(27)
     # pas d'info sur le fait qu'un lieu dit soit habité ou pas dans TOPO -> 1 par défaut
     carlieudit = "1"
-    if row["type voie"] == "4":
+    if row["type_voie"] == "4":
         carlieudit = " "
     #    print("{} -> '{}' + '{}'".format(row["libelle"][0:4], natvoie, libelle))
     # conversion de YYYYMMDD en YYYYQQQ
@@ -59,13 +55,13 @@ def print_voie(row, curtypecomm, currurcomm):
         "libelle": libelle,
         "curtypecomm": curtypecomm,
         "currurcomm": currurcomm,
-        "caracterevoie": row["caractere voie"],
+        "caracterevoie": row["caractere_voie"],
         "nopopinfo": "".ljust(14, "0"),
         "datecreation": sdate.rjust(14, "0"),
         "nocodemajic": "".ljust(20),
-        "typevoie": row["type voie"],
+        "typevoie": row["type_voie"],
         "caracterelieudit": carlieudit,
-        "motclassant": row["mot classant"],
+        "motclassant": row["mot_classant"],
     }
     print(
         "{dept}{dir}{inseerivo}{clerivo}{natvoie}{libelle}{curtypecomm}  {currurcomm}  {caracterevoie}          {nopopinfo} {datecreation}{nocodemajic}{typevoie}{caracterelieudit}  {motclassant}".format(
@@ -78,8 +74,8 @@ def print_voie(row, curtypecomm, currurcomm):
 def print_commune(row, curtypecomm, currurcomm):
     # 991008415001    13;ALLANCHE;N;N;3;3;;;00000000;18750101;;;00000000
     # 150001    VALLANCHE                       N  3      000128600000000000000 00000001987001
-    code = row["code topo"]
-    date = row["date creation de article"]
+    code = row["code_topo"]
+    date = row["date_creation_de_article"]
     sdate = "{}{:03d}".format(
         date[0:4], numjouran(atoi(date[6:]), atoi(date[4:6]), atoi(date[0:4]))
     )
@@ -110,8 +106,8 @@ def print_dep(row):
     # XX no support for non-0 direction
     # 991008415       12;CANTAL;;;;;;;00000000;17900304;;;00000000
     # 150        CANTAL                                          00000000000000 00000000000000
-    code = row["code topo"]
-    date = row["date creation de article"]
+    code = row["code_topo"]
+    date = row["date_creation_de_article"]
     sdate = "{}{:03d}".format(
         date[0:4], numjouran(atoi(date[6:]), atoi(date[4:6]), atoi(date[0:4]))
     )
@@ -164,35 +160,36 @@ with csvfile:
         csvfile,
         delimiter=";",
         fieldnames=(
-            "code topo",
+            "code_topo",
+            "nature_de_la_voie",
             "libelle",
-            "type commune actuel (R ou N)",
-            "type commune FIP (RouNFIP)",
-            "RUR actuel",
-            "RUR FIP",
-            "caractere voie",
+            "type_commune_actuel_r_ou_n",
+            "type_commune_fip_r_ou_nfip",
+            "rur_actuel",
+            "rur_fip",
+            "caractere_voie",
             "annulation",
-            "date annulation",
-            "date creation de article",
-            "type voie",
-            "mot classant",
-            "date derniere transition",
+            "date_annulation",
+            "date_creation_de_article",
+            "type_voie",
+            "mot_classant",
+            "date_derniere_transition",
         ),
     )
     curtypecomm = None
     currurcomm = None
     curcomm = None
     for row in reader:
-        type_enr = row["code topo"][16:18]
-        code_insee = row["code topo"][8:13]
+        type_enr = row["code_topo"][16:18]
+        code_insee = row["code_topo"][8:13]
         if type_enr == "12":
             # departement
             print_dep(row)
         elif type_enr == "13":
             # commune
             curcomm = code_insee
-            curtypecomm = row["type commune actuel (R ou N)"]
-            currurcomm = row["RUR actuel"]
+            curtypecomm = row["type_commune_actuel_r_ou_n"]
+            currurcomm = row["rur_actuel"]
             if curtypecomm == "R" and currurcomm == "":
                 currurcomm = " "
             print_commune(row, curtypecomm, currurcomm)
