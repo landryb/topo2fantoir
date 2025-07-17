@@ -35,7 +35,7 @@ def print_voie(row, curtypecomm, currurcomm):
     # 1500010001YGR  GRANDE RUE ABBE DE PRADT   N  3  0          00000000000000 00000001987001               002621   PRADT
     code = row["code_topo"]
     date = row["date_creation_de_article"]
-    natvoie = row["nature_de_la_voie"].ljust(4)
+    natvoie = row["nature_de_voie"].ljust(4)
     libelle = row["libelle"].ljust(27)
     # pas d'info sur le fait qu'un lieu dit soit habité ou pas dans TOPO -> 1 par défaut
     carlieudit = "1"
@@ -161,7 +161,7 @@ with csvfile:
         delimiter=";",
         fieldnames=(
             "code_topo",
-            "nature_de_la_voie",
+            "nature_de_voie",
             "libelle",
             "type_commune_actuel_r_ou_n",
             "type_commune_fip_r_ou_nfip",
