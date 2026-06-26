@@ -10,7 +10,10 @@ Mais votre outil n'a pas encore été mis à jour pour supporter ce nouveau
 fichier.. (ex [plugin qgis cadastre](https://github.com/3liz/QgisCadastrePlugin/issues/345)).
 
 Ce bout de python **essaie** de 'recréer' un fichier départemental FANTOIR depuis
-l'export CSV du fichier TOPO.
+l'export CSV du fichier TOPO, et produit au passage des exports départementaux au format TOPO.
+
+Depuis février 2026, le premier champ de TOPO `code_topo` a été splitté en 6
+sous-champs dans le CSV, le script prend uniquement ce format en charge.
 
 
 ## Limitations
@@ -32,6 +35,9 @@ du CRAIG:
 - [FANTOIR par département Juillet 2025](https://drive.opendata.craig.fr/s/opendata?path=%2Fadresse%2Ffantoir)
 - [TOPO par département Juillet 2025](https://drive.opendata.craig.fr/s/opendata?path=%2Fadresse%2Ftopo)
 
+Des millésimes plus anciens [sont aussi disponibles](https://drive.opendata.craig.fr/s/opendata?path=%2Fadresse),
+avec des structures légèrement différentes pour les fichiers TOPO.
+
 ## Utilisation
 
 ### prérequis
@@ -48,10 +54,12 @@ Il n'y a pas de modules particuliers à installer.
 
 ### Téléchargement du fichier TOPO
 
-Télécharger le fichier TOPO depuis [cette page](https://www.data.gouv.fr/fr/datasets/fichier-des-entites-topographiques-topo-dgfip-1/).
+Télécharger le fichier TOPO depuis [cette page](https://data.economie.gouv.fr/explore/assets/topo-fichier-des-entites-topographiques/export/)
 
 Ou utiliser cette commande : `curl -o topo-fichier-des-entites-topographiques.csv https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/topo-fichier-des-entites-topographiques/exports/csv`
 
+
+Attention, le fichier CSV sur [data.gouv](https://www.data.gouv.fr/fr/datasets/fichier-des-entites-topographiques-topo-dgfip-1/) n'a pas le même en-tête et n'est pas compatible avec cet outil.
 
 ### Création d'un fichier TOPO départemental
 
@@ -65,7 +73,7 @@ Exemple pour le département du Cantal (15) dans la région Auvergne-Rhône-Alpe
 (84) :
 
 ```
-$grep  ^991008415 topo-fichier-des-entites-topographiques.csv | sort > topo_15.csv
+$grep  ^99100;84;15 topo-fichier-des-entites-topographiques.csv | sort > topo_15.csv
 ```
 
 ### Transformation du fichier TOPO en un fichier FANTOIR
