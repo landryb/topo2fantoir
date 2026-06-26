@@ -33,7 +33,7 @@ def numjouran(j, m, a):
 def print_voie(row, curtypecomm, currurcomm):
     # 991008415001000114;GR  GRANDE RUE ABBE DE PRADT;;;;;0;;00000000;19870101;1;PRADT;20050524
     # 1500010001YGR  GRANDE RUE ABBE DE PRADT   N  3  0          00000000000000 00000001987001               002621   PRADT
-    code = row["code_topo"]
+    code = row["code_pays"] + row["code_region"] + row["code_dep"] + row["code_commune"] + row["code_voie"] + row["code_type_topo"]
     date = row["date_creation_de_article"]
     natvoie = row["nature_de_voie"].ljust(4)
     libelle = row["libelle"].ljust(27)
@@ -47,8 +47,8 @@ def print_voie(row, curtypecomm, currurcomm):
         date[0:4], numjouran(atoi(date[6:]), atoi(date[4:6]), atoi(date[0:4]))
     )
     args = {
-        "dept": code[7:9],
-        "dir": insee2dir.get(code[7:12], "0"),
+        "dept": row["code_dep"],
+        "dir": insee2dir.get(row["code_dep"] + row["code_commune"], "0"),
         "inseerivo": code[9:16],
         "clerivo": compute_cle(code),
         "natvoie": natvoie,
@@ -74,7 +74,7 @@ def print_voie(row, curtypecomm, currurcomm):
 def print_commune(row, curtypecomm, currurcomm):
     # 991008415001    13;ALLANCHE;N;N;3;3;;;00000000;18750101;;;00000000
     # 150001    VALLANCHE                       N  3      000128600000000000000 00000001987001
-    code = row["code_topo"]
+    code = row["code_pays"] + row["code_region"] + row["code_dep"] + row["code_commune"] + '    ' + row["code_type_topo"]
     date = row["date_creation_de_article"]
     sdate = "{}{:03d}".format(
         date[0:4], numjouran(atoi(date[6:]), atoi(date[4:6]), atoi(date[0:4]))
@@ -83,9 +83,9 @@ def print_commune(row, curtypecomm, currurcomm):
     if date == "18750101":
         sdate = "1987001"
     args = {
-        "dept": code[7:9],
-        "dir": insee2dir.get(code[7:12], "0"),
-        "inseerivo": code[9:16],
+        "dept": row["code_dep"],
+        "dir": insee2dir.get(row["code_dep"] + row["code_commune"], "0"),
+        "inseerivo": row["code_commune"]+ '    ',
         "clerivo": compute_cle(code),
         "libelle": row["libelle"].ljust(31),
         "curtypecomm": curtypecomm,
@@ -106,13 +106,12 @@ def print_dep(row):
     # XX no support for non-0 direction
     # 991008415       12;CANTAL;;;;;;;00000000;17900304;;;00000000
     # 150        CANTAL                                          00000000000000 00000000000000
-    code = row["code_topo"]
     date = row["date_creation_de_article"]
     sdate = "{}{:03d}".format(
         date[0:4], numjouran(atoi(date[6:]), atoi(date[4:6]), atoi(date[0:4]))
     )
     args = {
-        "dept": code[7:9],
+        "dept": row["code_dep"],
         "libelle": row["libelle"].ljust(48),
         "zero": "".ljust(14, "0"),
         "datecreation": sdate.rjust(14, "0"),
@@ -160,7 +159,12 @@ with csvfile:
         csvfile,
         delimiter=";",
         fieldnames=(
-            "code_topo",
+            "code_pays",
+            "code_region",
+            "code_dep",
+            "code_commune",
+            "code_voie",
+            "code_type_topo",
             "nature_de_voie",
             "libelle",
             "type_commune_actuel_r_ou_n",
@@ -180,8 +184,8 @@ with csvfile:
     currurcomm = None
     curcomm = None
     for row in reader:
-        type_enr = row["code_topo"][16:18]
-        code_insee = row["code_topo"][8:13]
+        type_enr = row["code_type_topo"]
+        code_insee = row["code_dep"] + row["code_commune"]
         if type_enr == "12":
             # departement
             print_dep(row)
